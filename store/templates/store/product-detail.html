@@ -1,0 +1,405 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Liquor </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="{% static 'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;1,200;1,300;1,400;1,500;1,700&display=swap' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <style>
+  .reply-container {
+
+    display: flex;
+    flex-wrap: wrap;
+
+  .reply {
+    flex: 1 0 33%; /* specify the width of each reply */
+  }
+  }
+</style>
+    <link rel="stylesheet" href="{% static 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+
+    	<div class="wrap">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 d-flex align-items-center">
+						{% if user.is_authenticated %}
+
+
+						<p class="mb-0 phone pl-md-2">
+							<a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span> +00 1234 567</a>
+							<a href="#"><span class="fa fa-paper-plane mr-1"></span> Your email is: {{ request.user.email }}</a>
+							{% else %}
+							<a href="#"><span class="fa fa-paper-plane mr-1"></span> You are not logged in</a>
+
+						</p>
+							{% endif %}
+					</div>
+					<div class="col-md-6 d-flex justify-content-md-end">
+						<div class="social-media mr-4">
+			    		<p class="mb-0 d-flex">
+			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+			    		</p>
+		        </div>
+		        <div class="reg">
+		        	{% if user.is_authenticated %}
+
+		        	<p class="mb-0"><a href="#" class="mr-2">Welcome, {{ user.username }}!
+						<a href="{% url 'logout' %}">Sign out</a>
+                                            </a>
+					{% else %}
+					<p class="mb-0"><a href="{% url 'register' %}" class="mr-2">Sign up </a>
+						<a href="{% url 'login' %}">Log In</a></p>
+					{% endif %}
+					</div>
+                        </div>
+				</div>
+			</div>
+		</div>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{% url 'store' %}">Liquor <span>store</span></a>
+	      <div class="order-lg-last btn-group">
+          <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          	<span class="flaticon-shopping-bag"></span>
+          	<div class="d-flex justify-content-center align-items-center"><small>{{items|length}}</small></div>
+          </a>
+
+          <div class="dropdown-menu dropdown-menu-right">
+
+                    {% for item in items %}
+				    <div class="dropdown-item d-flex align-items-start" href="#">
+				    	<div class="img" style="background-image: url({{ item.product.imageURL}});"></div>
+				    	<div class="text pl-3">
+				    		<h4>{{item.product.name}}</h4>
+				    		<p class="mb-0"><a href="#" class="price">${{ item.product.price }}</a><span class="quantity ml-3">Quantity: {{ item.quantity}}</span></p>
+				    	</div>
+				    </div>
+				    {% endfor %}
+				    <a class="dropdown-item text-center btn-link d-block w-100" href="{% url 'cart' %}">
+				    	View All
+				    	<span class="ion-ios-arrow-round-forward"></span>
+				    </a>
+				  </div>
+
+        </div>
+
+
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="{% url 'store' %}" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+	          <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+              	<a class="dropdown-item" href="{% url 'product' %}">Products</a>
+                <a class="dropdown-item" href="{% url 'cart' %}">Cart</a>
+                <a class="dropdown-item" href="{% url 'checkout' %}">Checkout</a>
+              </div>
+            </li>
+	          <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/static/images/bg_4.jpg');">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-center">
+          <div class="col-md-9 ftco-animate mb-5 text-center">
+          	<p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url 'store' %}">Home <i class="fa fa-chevron-right"></i></a></span> <span>Products <i class="fa fa-chevron-right"></i></span></p>
+            <h2 class="mb-0 bread">Products</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <div class="container">
+      <div class="row">
+          <div class="col-md-9">
+
+        <h3>Name - {{ product.name }}</h3>
+
+        <h2>Price - ${{ product.price }}</h2>
+       <h2>Category - {{ product.category }}</h2>
+               <h2><div class="average-rating">Average rating: {{ avg_rating }}</div></h2>
+              <img src="{{ product.imageURL }}"  width="200" height="300" alt="{{ product.name }}">
+        <form method="post" action="{% url 'product-detail' product_id=product.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+            {{ form.as_p }}
+        <input type="submit" value="Add to Cart">
+      </form>
+
+<div class="col-md-7">
+  <h3 class="mb-4">{{ reviews.count }} Reviews</h3>
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <div class="comments-scrollbar">
+        <div style="height: 60vh; width: 150vh; overflow-y: scroll;">
+        {% for review in reviews %}
+        <div class="review-container" data-review-id="{{ review.id }}">
+            <div class="review card">
+                <div class="card-body">
+                    <div class="user-info d-flex align-items-center">
+                        <div class="user-img" style="background-image: url(/static/images/person_3.jpg)"></div>
+                        <div class="username ml-3">{{ review.user.username }}</div>
+                        <div class="timestamp ml-auto">{{ review.created_at }}</div>
+                    </div>
+                    <div class="review-text mt-3">
+                        <div class="rating d-inline-block">
+                            <i class="fa fa-star"></i> {{ review.rating }}
+                        </div>
+
+                        <p class="mt-2">{{ review.review_text }}</p>
+                        <button type="button" class="btn btn-primary reply-button mt-3" data-toggle="modal" data-target="#replyModal" data-review-id="{{ review.id }}">Reply</button>
+                    </div>
+                </div>
+                {% for reply in review.reply_set.all %}
+                <div class="reply-container card mt-3">
+                    <div class="card-body">
+                        <div class="reply">
+                            <div class="user-info d-flex align-items-center">
+                                <div class="user-img" style="background-image: url(/static/images/person_3.jpg)"></div>
+                                <div class="username ml-3">{{ reply.user.username }}</div>
+                                <div class="timestamp ml-auto">{{ reply.created_at }}</div>
+                            </div>
+                            <div class="reply-text mt-3">
+                                <p>{{ reply.reply_text }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+        <!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="replyModalLabel">Reply</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'product-detail' product_id=product.id %}">
+                {% csrf_token %}
+                <!-- Add a hidden field to store the review_id value -->
+                <input type="hidden" name="review_id" id="id_review_id" value="">
+                <div class="modal-body">
+                    {{ repform.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+            </div>
+          </div>
+
+        </div>
+</div>
+          </div>
+      </div>
+  </div>
+    <div class="col-md-4">
+    <h3>Leave a Review</h3>
+    <form method="post" action="{% url 'product-detail' product_id=product.id %}">
+      {% csrf_token %}
+      {{ reviewform }}
+      <input type="submit" value="Post review">
+    </form>
+</div>
+  </div>
+</div>
+
+
+
+
+
+
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+    <footer class="ftco-footer">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-sm-12 col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2 logo"><a href="#">Liquor <span>Store</span></a></h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-2">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">My Accounts</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>My Account</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Register</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Log In</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>My Order</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Information</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Catalog</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Term &amp; Conditions</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Quick Link</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>New User</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Help Center</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Report Spam</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Faq's</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-paper-plane pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid px-0 py-5 bg-black">
+      	<div class="container">
+      		<div class="row">
+	          <div class="col-md-12">
+
+	            <p class="mb-0" style="color: rgba(255,255,255,.5);"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+	<script>document.write(new Date().getFullYear());</script> </a>
+	  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+	          </div>
+	        </div>
+      	</div>
+      </div>
+    </footer>
+
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js'"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+  <script src="{% static 'js/scrollax.min.js' %}"></script>
+  <script src="{% static 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false' %}"></script>
+  <script src="{% static 'js/google-map.js' %}"></script>
+  <script src="{% static 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+       <script>
+
+</script>
+        <script>
+    // Attach click event listener to like buttons
+    $('.like-btn').on('click', function() {
+        // Get the review ID from the button's data attribute
+        var reviewId = $(this).data('review-id');
+
+        // Make an AJAX call to the like_review view
+        $.ajax({
+            url: '/review/like/' + reviewId + '/',
+            method: 'POST',
+            success: function(data) {
+                // Update the like count displayed on the button
+                $('#like-' + reviewId).text('Like (' + data.like_count + ')');
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+<script>
+  $(document).ready(function() {
+        // Bind a click event handler to the reply buttons
+        $('.reply-button').click(function() {
+            // Get the review ID of the clicked button
+            var reviewId = $(this).data('review-id');
+
+            // Set the review ID value in the hidden field
+            $('#id_review_id').val(reviewId);
+
+            // Show the modal form
+            $('#replyModal').modal('show');
+        });
+    });
+</script>
+
+
+        <script src="{% static 'https://code.jquery.com/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js' %}"></script>
+  <script var commentsPerPage = Math.floor(300 / $('.review').outerHeight());
+// Set the height of the scrollable area based on the number of comments
+</script>
+        <script>
+    $('.comments-scrollbar').height(commentsPerPage * $('.review').outerHeight());
+    $('.comments-scrollbar').scroll(function() {
+        // Check if the scrollbar is within 5px of the bottom of the scrollable area
+        if ($('.comments-scrollbar').scrollTop() + $('.comments-scrollbar').innerHeight() >= $('.comments-scrollbar')[0].scrollHeight - 5) {
+            // Load more comments here (e.g. via an AJAX request)
+        }
+    });
+
+        </script>
+</body>
+</html>
