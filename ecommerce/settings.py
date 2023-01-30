@@ -116,7 +116,7 @@ EMAIL_USE_SSL = False
 # EMAIL_PORT
 EMAIL_HOST_USER = "bidzhamov.stevens@mail.ru"
 
-EMAIL_HOST_PASSWORD = 'casbgHxc0FFadpCFMZMA'
+EMAIL_HOST_PASSWORD = ''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
